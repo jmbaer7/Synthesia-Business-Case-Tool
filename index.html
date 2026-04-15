@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<!-- saved from url=(0063)file:///C:/Users/jbaer/Downloads/synthesia_business_case_1.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synthesia Business Case Calculator</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 14px;
+    color: #1a1a1a;
+    background: #f5f5f5;
+    padding: 24px 16px 48px;
+  }
+
+  .page {
+    max-width: 820px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    padding: 32px;
+  }
+
+  .kicker {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: #888;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  h1 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 4px;
+  }
+
+  .subline {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  hr.divider {
+    border: none;
+    border-top: 1px solid #ebebeb;
+    margin: 20px 0;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 10px;
+  }
+
+  /* Process comparison */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .col {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 16px 18px;
+    background: #fff;
+  }
+
+  .col.accent {
+    border: 2px solid #1D9E75;
+  }
+
+  .col-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 10px;
+  }
+
+  .col-label.green { color: #0F6E56; }
+
+  .step-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 7px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 12px;
+    gap: 8px;
+  }
+
+  .step-row:last-of-type { border-bottom: none; }
+  .step-name { color: #555; flex: 1; }
+  .step-time { font-weight: 600; color: #1a1a1a; white-space: nowrap; }
+  .step-time.green { color: #0F6E56; }
+
+  .total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-top: 10px;
+    border-top: 1px solid #d0d0d0;
+    margin-top: 4px;
+  }
+
+  .total-label { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+  .total-val { font-size: 16px; font-weight: 700; }
+  .total-val.red { color: #D85A30; }
+  .total-val.green { color: #0F6E56; }
+
+  /* Tabs */
+  .team-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    font-size: 13px;
+    padding: 6px 18px;
+    border-radius: 20px;
+    border: 1px solid #d0d0d0;
+    background: transparent;
+    color: #666;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .tab-btn:hover { background: #f5f5f5; }
+
+  .tab-btn.active {
+    background: #f0f0f0;
+    color: #1a1a1a;
+    font-weight: 600;
+    border-color: #aaa;
+  }
+
+  .team-panel { display: none; }
+  .team-panel.active { display: block; }
+
+  .team-header {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 4px;
+  }
+
+  .team-desc {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 14px;
+  }
+
+  /* Calculator box */
+  .calc-box {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    background: #fafafa;
+    margin-bottom: 20px;
+  }
+
+  .calc-section-head {
+    font-size: 11px;
+    font-weight: 700;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .calc-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .calc-row:last-child { margin-bottom: 0; }
+
+  .calc-row label {
+    font-size: 13px;
+    color: #555;
+    min-width: 230px;
+  }
+
+  .calc-row input[type=range] {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 4px;
+    background: #ddd;
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .calc-row input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #1D9E75;
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px #1D9E75;
+  }
+
+  .calc-row input[type=range]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #1D9E75;
+    cursor: pointer;
+    border: 2px solid #fff;
+  }
+
+  .calc-val {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a1a1a;
+    min-width: 100px;
+    text-align: right;
+  }
+
+  .calc-divider {
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 16px 0;
+  }
+
+  /* Result metrics */
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .metric {
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+
+  .metric-label { font-size: 11px; color: #888; margin-bottom: 4px; }
+  .metric-val { font-size: 20px; font-weight: 700; color: #1a1a1a; }
+  .metric-val.green { color: #085041; }
+  .metric-sub { font-size: 11px; color: #aaa; margin-top: 3px; }
+
+  /* Savings banner */
+  .savings-banner {
+    background: #E1F5EE;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-top: 16px;
+  }
+
+  .savings-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .savings-label { font-size: 13px; color: #0F6E56; font-weight: 600; }
+  .savings-sub { font-size: 12px; color: #1D9E75; margin-top: 2px; }
+  .savings-val { font-size: 28px; font-weight: 700; color: #085041; }
+
+  .savings-breakdown {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    border-top: 1px solid #9FE1CB;
+    padding-top: 12px;
+  }
+
+  .sbd-label { font-size: 11px; color: #1D9E75; margin-bottom: 2px; }
+  .sbd-val { font-size: 14px; font-weight: 700; color: #085041; }
+
+  /* Grand total */
+  .grand-box {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    background: #fff;
+    margin-bottom: 20px;
+  }
+
+  .grand-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+
+  .grand-metric {
+    background: #f5f5f5;
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+
+  .grand-metric-label { font-size: 11px; color: #888; margin-bottom: 4px; }
+  .grand-metric-val { font-size: 18px; font-weight: 700; color: #085041; }
+  .grand-metric-sub { font-size: 11px; color: #aaa; margin-top: 3px; }
+
+  /* Notes */
+  .note-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .note {
+    border-left: 3px solid #d0d0d0;
+    padding: 8px 12px;
+  }
+
+  .note-title { font-size: 12px; font-weight: 600; color: #1a1a1a; margin-bottom: 3px; }
+  .note-body { font-size: 12px; color: #666; line-height: 1.5; }
+
+  .source {
+    font-size: 11px;
+    color: #aaa;
+    margin-top: 24px;
+    line-height: 1.7;
+    border-top: 1px solid #ebebeb;
+    padding-top: 16px;
+  }
+
+  @media (max-width: 600px) {
+    .page { padding: 20px 16px; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .results-grid { grid-template-columns: 1fr 1fr; }
+    .savings-breakdown { grid-template-columns: 1fr; }
+    .grand-grid { grid-template-columns: 1fr 1fr; }
+    .note-grid { grid-template-columns: 1fr; }
+    .calc-row { flex-wrap: wrap; }
+    .calc-row label { min-width: 100%; }
+    .calc-val { min-width: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="kicker">Business case</div>
+  <h1>Synthesia vs. manual screen-recorded training video</h1>
+  <div class="subline">Basis: 10-minute microlearning (Teams screen-record voiceover) and long-form video (agency-produced). Organized by team.</div>
+
+  <div class="section-label">Process comparison — microlearning</div>
+  <div class="compare-grid">
+    <div class="col">
+      <div class="col-label">Manual process</div>
+      <div class="step-row"><span class="step-name">Write or outline talk track</span><span class="step-time">45–90 min</span></div>
+      <div class="step-row"><span class="step-name">Review &amp; prep slides for recording</span><span class="step-time">15–30 min</span></div>
+      <div class="step-row"><span class="step-name">Set up Teams, test audio, dry run</span><span class="step-time">15–30 min</span></div>
+      <div class="step-row"><span class="step-name">Record (incl. re-takes)</span><span class="step-time">20–40 min</span></div>
+      <div class="step-row"><span class="step-name">Trim, export, upload, share</span><span class="step-time">15–30 min</span></div>
+      <div class="total-row"><span class="total-label">Total per video</span><span class="total-val red">~1.75–3.5 hrs</span></div>
+    </div>
+    <div class="col accent">
+      <div class="col-label green">Synthesia process</div>
+      <div class="step-row"><span class="step-name">Generate AI talk track (prompt)</span><span class="step-time green">5–10 min</span></div>
+      <div class="step-row"><span class="step-name">Upload existing PowerPoint</span><span class="step-time green">2–3 min</span></div>
+      <div class="step-row"><span class="step-name">Select avatar &amp; voice</span><span class="step-time green">2–5 min</span></div>
+      <div class="step-row"><span class="step-name">Generate &amp; review video</span><span class="step-time green">5–15 min</span></div>
+      <div class="step-row"><span class="step-name">Share link</span><span class="step-time green">&lt;1 min</span></div>
+      <div class="total-row"><span class="total-label">Total per video</span><span class="total-val green">~15–35 min</span></div>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:16px;">Process comparison — long-form</div>
+  <div class="compare-grid">
+    <div class="col">
+      <div class="col-label">Manual process (agency)</div>
+      <div class="step-row"><span class="step-name">Brief, scope &amp; vendor coordination</span><span class="step-time">varies</span></div>
+      <div class="step-row"><span class="step-name">Script, storyboard, revisions</span><span class="step-time">varies</span></div>
+      <div class="step-row"><span class="step-name">Production (talent, filming, VO)</span><span class="step-time">varies</span></div>
+      <div class="step-row"><span class="step-name">Edit, review cycles, delivery</span><span class="step-time">varies</span></div>
+      <div class="step-row"><span class="step-name">Typical agency cost</span><span class="step-time">$20,000</span></div>
+      <div class="total-row"><span class="total-label">Cost per video</span><span class="total-val red">$20,000</span></div>
+    </div>
+    <div class="col accent">
+      <div class="col-label green">Synthesia process</div>
+      <div class="step-row"><span class="step-name">AI script generation &amp; editing</span><span class="step-time green">30–60 min</span></div>
+      <div class="step-row"><span class="step-name">Slide deck / scene building</span><span class="step-time green">1–2 hrs</span></div>
+      <div class="step-row"><span class="step-name">Avatar, voice &amp; brand setup</span><span class="step-time green">15–30 min</span></div>
+      <div class="step-row"><span class="step-name">Generate, review &amp; iterate</span><span class="step-time green">30–60 min</span></div>
+      <div class="step-row"><span class="step-name">Publish &amp; distribute</span><span class="step-time green">&lt;15 min</span></div>
+      <div class="total-row"><span class="total-label">Est. total time (in-house)</span><span class="total-val green">~2.5–4 hrs</span></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section-label">ROI calculator by team</div>
+  <div class="team-tabs">
+    <button class="tab-btn active" onclick="switchTab(&#39;ats&#39;, this)">ATS</button>
+    <button class="tab-btn" onclick="switchTab(&#39;ex&#39;, this)">EX</button>
+    <button class="tab-btn" onclick="switchTab(&#39;eteam&#39;, this)">E-Team</button>
+  </div>
+
+  <!-- ATS -->
+  <div id="panel-ats" class="team-panel active">
+    <div class="team-header">ATS</div>
+    <div class="team-desc">Applicant Tracking &amp; Staffing — training video production estimates for this team.</div>
+    <div class="calc-box">
+      <div class="calc-section-head">Microlearning videos (10 min, Teams screen-record)</div>
+      <div class="calc-row"><label>Number of microlearning videos</label><input type="range" min="0" max="100" value="10" step="1" id="ats-ml" oninput="calcTeam(&#39;ats&#39;)"><span class="calc-val" id="ats-ml-out">10 videos</span></div>
+      <div class="calc-row"><label>Fully-loaded hourly rate</label><input type="range" min="30" max="200" value="100" step="5" id="ats-rate" oninput="calcTeam(&#39;ats&#39;)"><span class="calc-val" id="ats-rate-out">$100 / hr</span></div>
+      <div class="calc-row"><label>Time assumption</label><input type="range" min="0" max="1" value="0.5" step="0.01" id="ats-conf" oninput="calcTeam(&#39;ats&#39;)"><span class="calc-val" id="ats-conf-out">midpoint</span></div>
+      <div class="calc-divider"></div>
+      <div class="calc-section-head">Long-form videos (agency-produced)</div>
+      <div class="calc-row"><label>Number of long-form videos</label><input type="range" min="0" max="20" value="2" step="1" id="ats-lf" oninput="calcTeam(&#39;ats&#39;)"><span class="calc-val" id="ats-lf-out">2 videos</span></div>
+      <div class="calc-row"><label>Agency cost per long-form video</label><input type="range" min="5000" max="50000" value="20000" step="1000" id="ats-agency" oninput="calcTeam(&#39;ats&#39;)"><span class="calc-val" id="ats-agency-out">$20,000</span></div>
+      <div class="results-grid">
+        <div class="metric"><div class="metric-label">Manual time (microlearning)</div><div class="metric-val" id="ats-m-time">26 hr 15 min</div><div class="metric-sub" id="ats-m-sub">2 hr 38 min per video</div></div>
+        <div class="metric"><div class="metric-label">Synthesia time (microlearning)</div><div class="metric-val green" id="ats-s-time">4 hr 10 min</div><div class="metric-sub" id="ats-s-sub">25 min per video</div></div>
+        <div class="metric"><div class="metric-label">Time saved</div><div class="metric-val green" id="ats-t-saved">22 hr 5 min</div><div class="metric-sub" id="ats-t-pct">84% reduction</div></div>
+      </div>
+      <div class="savings-banner">
+        <div class="savings-top">
+          <div><div class="savings-label">Total estimated savings — ATS</div><div class="savings-sub" id="ats-savings-sub">22 hr 5 min labor saved + 2 long-form avoided</div></div>
+          <div class="savings-val" id="ats-savings-total">$42,208</div>
+        </div>
+        <div class="savings-breakdown">
+          <div><div class="sbd-label">Labor savings (microlearning)</div><div class="sbd-val" id="ats-labor-save">$2,208</div></div>
+          <div><div class="sbd-label">Agency cost avoided (long-form)</div><div class="sbd-val" id="ats-agency-save">$40,000</div></div>
+          <div><div class="sbd-label">Long-form videos replaced</div><div class="sbd-val" id="ats-lf-count">2 videos</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EX -->
+  <div id="panel-ex" class="team-panel">
+    <div class="team-header">EX</div>
+    <div class="team-desc">Employee Experience — training video production estimates for this team.</div>
+    <div class="calc-box">
+      <div class="calc-section-head">Microlearning videos (10 min, Teams screen-record)</div>
+      <div class="calc-row"><label>Number of microlearning videos</label><input type="range" min="0" max="100" value="10" step="1" id="ex-ml" oninput="calcTeam(&#39;ex&#39;)"><span class="calc-val" id="ex-ml-out">10 videos</span></div>
+      <div class="calc-row"><label>Fully-loaded hourly rate</label><input type="range" min="30" max="200" value="100" step="5" id="ex-rate" oninput="calcTeam(&#39;ex&#39;)"><span class="calc-val" id="ex-rate-out">$100 / hr</span></div>
+      <div class="calc-row"><label>Time assumption</label><input type="range" min="0" max="1" value="0.5" step="0.01" id="ex-conf" oninput="calcTeam(&#39;ex&#39;)"><span class="calc-val" id="ex-conf-out">midpoint</span></div>
+      <div class="calc-divider"></div>
+      <div class="calc-section-head">Long-form videos (agency-produced)</div>
+      <div class="calc-row"><label>Number of long-form videos</label><input type="range" min="0" max="20" value="2" step="1" id="ex-lf" oninput="calcTeam(&#39;ex&#39;)"><span class="calc-val" id="ex-lf-out">2 videos</span></div>
+      <div class="calc-row"><label>Agency cost per long-form video</label><input type="range" min="5000" max="50000" value="20000" step="1000" id="ex-agency" oninput="calcTeam(&#39;ex&#39;)"><span class="calc-val" id="ex-agency-out">$20,000</span></div>
+      <div class="results-grid">
+        <div class="metric"><div class="metric-label">Manual time (microlearning)</div><div class="metric-val" id="ex-m-time">26 hr 15 min</div><div class="metric-sub" id="ex-m-sub">2 hr 38 min per video</div></div>
+        <div class="metric"><div class="metric-label">Synthesia time (microlearning)</div><div class="metric-val green" id="ex-s-time">4 hr 10 min</div><div class="metric-sub" id="ex-s-sub">25 min per video</div></div>
+        <div class="metric"><div class="metric-label">Time saved</div><div class="metric-val green" id="ex-t-saved">22 hr 5 min</div><div class="metric-sub" id="ex-t-pct">84% reduction</div></div>
+      </div>
+      <div class="savings-banner">
+        <div class="savings-top">
+          <div><div class="savings-label">Total estimated savings — EX</div><div class="savings-sub" id="ex-savings-sub">22 hr 5 min labor saved + 2 long-form avoided</div></div>
+          <div class="savings-val" id="ex-savings-total">$42,208</div>
+        </div>
+        <div class="savings-breakdown">
+          <div><div class="sbd-label">Labor savings (microlearning)</div><div class="sbd-val" id="ex-labor-save">$2,208</div></div>
+          <div><div class="sbd-label">Agency cost avoided (long-form)</div><div class="sbd-val" id="ex-agency-save">$40,000</div></div>
+          <div><div class="sbd-label">Long-form videos replaced</div><div class="sbd-val" id="ex-lf-count">2 videos</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- E-Team -->
+  <div id="panel-eteam" class="team-panel">
+    <div class="team-header">E-Team</div>
+    <div class="team-desc">Executive Team enablement — training video production estimates for this team.</div>
+    <div class="calc-box">
+      <div class="calc-section-head">Microlearning videos (10 min, Teams screen-record)</div>
+      <div class="calc-row"><label>Number of microlearning videos</label><input type="range" min="0" max="100" value="10" step="1" id="eteam-ml" oninput="calcTeam(&#39;eteam&#39;)"><span class="calc-val" id="eteam-ml-out">10 videos</span></div>
+      <div class="calc-row"><label>Fully-loaded hourly rate</label><input type="range" min="30" max="200" value="100" step="5" id="eteam-rate" oninput="calcTeam(&#39;eteam&#39;)"><span class="calc-val" id="eteam-rate-out">$100 / hr</span></div>
+      <div class="calc-row"><label>Time assumption</label><input type="range" min="0" max="1" value="0.5" step="0.01" id="eteam-conf" oninput="calcTeam(&#39;eteam&#39;)"><span class="calc-val" id="eteam-conf-out">midpoint</span></div>
+      <div class="calc-divider"></div>
+      <div class="calc-section-head">Long-form videos (agency-produced)</div>
+      <div class="calc-row"><label>Number of long-form videos</label><input type="range" min="0" max="20" value="2" step="1" id="eteam-lf" oninput="calcTeam(&#39;eteam&#39;)"><span class="calc-val" id="eteam-lf-out">2 videos</span></div>
+      <div class="calc-row"><label>Agency cost per long-form video</label><input type="range" min="5000" max="50000" value="20000" step="1000" id="eteam-agency" oninput="calcTeam(&#39;eteam&#39;)"><span class="calc-val" id="eteam-agency-out">$20,000</span></div>
+      <div class="results-grid">
+        <div class="metric"><div class="metric-label">Manual time (microlearning)</div><div class="metric-val" id="eteam-m-time">26 hr 15 min</div><div class="metric-sub" id="eteam-m-sub">2 hr 38 min per video</div></div>
+        <div class="metric"><div class="metric-label">Synthesia time (microlearning)</div><div class="metric-val green" id="eteam-s-time">4 hr 10 min</div><div class="metric-sub" id="eteam-s-sub">25 min per video</div></div>
+        <div class="metric"><div class="metric-label">Time saved</div><div class="metric-val green" id="eteam-t-saved">22 hr 5 min</div><div class="metric-sub" id="eteam-t-pct">84% reduction</div></div>
+      </div>
+      <div class="savings-banner">
+        <div class="savings-top">
+          <div><div class="savings-label">Total estimated savings — E-Team</div><div class="savings-sub" id="eteam-savings-sub">22 hr 5 min labor saved + 2 long-form avoided</div></div>
+          <div class="savings-val" id="eteam-savings-total">$42,208</div>
+        </div>
+        <div class="savings-breakdown">
+          <div><div class="sbd-label">Labor savings (microlearning)</div><div class="sbd-val" id="eteam-labor-save">$2,208</div></div>
+          <div><div class="sbd-label">Agency cost avoided (long-form)</div><div class="sbd-val" id="eteam-agency-save">$40,000</div></div>
+          <div><div class="sbd-label">Long-form videos replaced</div><div class="sbd-val" id="eteam-lf-count">2 videos</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section-label">Combined savings — all teams</div>
+  <div class="grand-box">
+    <div class="grand-grid">
+      <div class="grand-metric"><div class="grand-metric-label">Total time saved</div><div class="grand-metric-val" id="grand-time">66 hr 15 min</div><div class="grand-metric-sub">all microlearning</div></div>
+      <div class="grand-metric"><div class="grand-metric-label">Total labor savings</div><div class="grand-metric-val" id="grand-labor">$6,625</div><div class="grand-metric-sub">microlearning production</div></div>
+      <div class="grand-metric"><div class="grand-metric-label">Agency cost avoided</div><div class="grand-metric-val" id="grand-agency">$120,000</div><div class="grand-metric-sub">long-form replaced</div></div>
+      <div class="grand-metric"><div class="grand-metric-label">Total estimated savings</div><div class="grand-metric-val" id="grand-total">$126,625</div><div class="grand-metric-sub">all teams combined</div></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="note-grid">
+    <div class="note"><div class="note-title">Revision cost advantage</div><div class="note-body">Manual re-records require the full process again. Synthesia edits are script-only — near-zero marginal cost per update.</div></div>
+    <div class="note"><div class="note-title">Quality floor rises</div><div class="note-body">Removes variability in audio quality, bad takes, and background noise — common pain points with Teams recordings.</div></div>
+    <div class="note"><div class="note-title">Scale without headcount</div><div class="note-body">Manual output is roughly linear with ID time. Synthesia breaks that — more videos don't require proportionally more hours.</div></div>
+    <div class="note"><div class="note-title">Speed to learner</div><div class="note-body">Same-day turnaround vs. days of scheduling, recording, and processing. Critical for fast-moving programs.</div></div>
+  </div>
+
+  <div class="source">
+    Sources: Talk track time derived from industry benchmark of 125–150 words/min spoken pace (Teleprompter.com, 2024); recording prep and re-take norms based on Teams screen-recording guidance (Marquette University IT, 2023; HYMS Learning Technologies, 2023); export/processing time from standard PowerPoint-to-video workflow documentation (Microsoft Support, 2024). Long-form agency cost baseline of $20,000 per video per eLearning Industry (2025). Synthesia process range per Synthesia platform documentation (7–30 min).
+  </div>
+
+</div>
+
+<script>
+const teamData = { ats: {}, ex: {}, eteam: {} };
+
+function confLabel(c) {
+  if (c < 0.33) return 'conservative';
+  if (c < 0.67) return 'midpoint';
+  return 'aggressive';
+}
+
+function fmtHrs(h) {
+  if (h <= 0) return '0 min';
+  if (h < 1) return Math.round(h * 60) + ' min';
+  const hrs = Math.floor(h);
+  const mins = Math.round((h - hrs) * 60);
+  if (mins === 0) return hrs + (hrs === 1 ? ' hr' : ' hrs');
+  return hrs + ' hr ' + mins + ' min';
+}
+
+function fmtCost(n) {
+  return '$' + Math.round(n).toLocaleString();
+}
+
+function calcTeam(t) {
+  const ml     = parseInt(document.getElementById(t+'-ml').value);
+  const rate   = parseInt(document.getElementById(t+'-rate').value);
+  const conf   = parseFloat(document.getElementById(t+'-conf').value);
+  const lf     = parseInt(document.getElementById(t+'-lf').value);
+  const agency = parseInt(document.getElementById(t+'-agency').value);
+
+  document.getElementById(t+'-ml-out').textContent     = ml + (ml === 1 ? ' video' : ' videos');
+  document.getElementById(t+'-rate-out').textContent   = '$' + rate + ' / hr';
+  document.getElementById(t+'-conf-out').textContent   = confLabel(conf);
+  document.getElementById(t+'-lf-out').textContent     = lf + (lf === 1 ? ' video' : ' videos');
+  document.getElementById(t+'-agency-out').textContent = '$' + agency.toLocaleString();
+
+  const mLo = 1.75, mHi = 3.5, sLo = 15/60, sHi = 35/60;
+  const mPer = mLo + conf * (mHi - mLo);
+  const sPer = sLo + conf * (sHi - sLo);
+
+  const mTotal    = mPer * ml;
+  const sTotal    = sPer * ml;
+  const saved     = mTotal - sTotal;
+  const pct       = mTotal > 0 ? Math.round((saved / mTotal) * 100) : 0;
+  const laborSave = saved * rate;
+  const agencySave = lf * agency;
+  const totalSave = laborSave + agencySave;
+
+  document.getElementById(t+'-m-time').textContent   = fmtHrs(mTotal);
+  document.getElementById(t+'-m-sub').textContent    = ml > 0 ? fmtHrs(mPer) + ' per video' : 'no videos';
+  document.getElementById(t+'-s-time').textContent   = fmtHrs(sTotal);
+  document.getElementById(t+'-s-sub').textContent    = ml > 0 ? fmtHrs(sPer) + ' per video' : 'no videos';
+  document.getElementById(t+'-t-saved').textContent  = fmtHrs(saved);
+  document.getElementById(t+'-t-pct').textContent    = pct + '% reduction';
+
+  document.getElementById(t+'-savings-sub').textContent   = fmtHrs(saved) + ' labor saved + ' + lf + ' long-form avoided';
+  document.getElementById(t+'-savings-total').textContent = fmtCost(totalSave);
+  document.getElementById(t+'-labor-save').textContent    = fmtCost(laborSave);
+  document.getElementById(t+'-agency-save').textContent   = fmtCost(agencySave);
+  document.getElementById(t+'-lf-count').textContent      = lf + (lf === 1 ? ' video' : ' videos');
+
+  teamData[t] = { saved, laborSave, agencySave, totalSave };
+  updateGrand();
+}
+
+function updateGrand() {
+  let totalTime = 0, totalLabor = 0, totalAgency = 0, totalAll = 0;
+  ['ats','ex','eteam'].forEach(t => {
+    if (teamData[t].saved !== undefined) {
+      totalTime   += teamData[t].saved;
+      totalLabor  += teamData[t].laborSave;
+      totalAgency += teamData[t].agencySave;
+      totalAll    += teamData[t].totalSave;
+    }
+  });
+  document.getElementById('grand-time').textContent   = fmtHrs(totalTime);
+  document.getElementById('grand-labor').textContent  = fmtCost(totalLabor);
+  document.getElementById('grand-agency').textContent = fmtCost(totalAgency);
+  document.getElementById('grand-total').textContent  = fmtCost(totalAll);
+}
+
+function switchTab(t, btn) {
+  ['ats','ex','eteam'].forEach(id => document.getElementById('panel-'+id).classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-'+t).classList.add('active');
+  btn.classList.add('active');
+}
+
+calcTeam('ats');
+calcTeam('ex');
+calcTeam('eteam');
+</script>
+
+
+</body></html>
